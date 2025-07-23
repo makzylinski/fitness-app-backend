@@ -15,7 +15,7 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
-    private void register(RegisterRequest request) {
+    public void register(RegisterRequest request) {
         if (request.getEmail() == null || request.getPassword() == null) {
             throw new RuntimeException("Email and password must not be null");
         }
