@@ -1,5 +1,6 @@
 package com.fitnessapp.fitnessapp.service;
 
+import com.fitnessapp.fitnessapp.dto.LoginRequest;
 import com.fitnessapp.fitnessapp.dto.RegisterRequest;
 import com.fitnessapp.fitnessapp.model.Role;
 import com.fitnessapp.fitnessapp.model.User;
@@ -15,6 +16,10 @@ public class UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private JwtService jwtService;
+
     public void register(RegisterRequest request) {
         if (request.getEmail() == null || request.getPassword() == null) {
             throw new RuntimeException("Email and password must not be null");
@@ -28,5 +33,17 @@ public class UserService {
         String encodedPassword = passwordEncoder.encode(request.getPassword());
 
         userRepository.save(new User(request.getEmail(), encodedPassword, Role.USER));
+    }
+
+    public String login(LoginRequest loginRequest) {
+       User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(
+                () -> new RuntimeException("User with this email does not exist")
+        );
+
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            throw new RuntimeException("Invalid password");
+        }
+
+        return jwtService.generateToken(user);
     }
 }
