@@ -1,5 +1,6 @@
 package com.fitnessapp.fitnessapp.controller;
 
+import com.fitnessapp.fitnessapp.dto.LoginRequest;
 import com.fitnessapp.fitnessapp.dto.RegisterRequest;
 import com.fitnessapp.fitnessapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,5 +21,10 @@ public class AuthController {
         userService.register(registerRequest);
 
         return "User registered successfully";
+    }
+
+    @PostMapping("/login")
+    public String login(@RequestBody LoginRequest loginRequest) {
+        return userService.login(loginRequest);
     }
 }
