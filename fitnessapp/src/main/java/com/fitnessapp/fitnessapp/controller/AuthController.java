@@ -2,8 +2,10 @@ package com.fitnessapp.fitnessapp.controller;
 
 import com.fitnessapp.fitnessapp.dto.LoginRequest;
 import com.fitnessapp.fitnessapp.dto.RegisterRequest;
+import com.fitnessapp.fitnessapp.dto.RegisterResponse;
 import com.fitnessapp.fitnessapp.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,10 +19,10 @@ public class AuthController {
     private UserService userService;
 
     @PostMapping("/register")
-    public String register(@RequestBody RegisterRequest registerRequest) {
+    public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) {
         userService.register(registerRequest);
 
-        return "User registered successfully";
+        return ResponseEntity.ok(new RegisterResponse("User registered successfully"));
     }
 
     @PostMapping("/login")
