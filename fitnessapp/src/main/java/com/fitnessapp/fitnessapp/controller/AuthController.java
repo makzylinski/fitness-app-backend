@@ -20,9 +20,13 @@ public class AuthController {
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) {
-        userService.register(registerRequest);
+        try {
+            userService.register(registerRequest);
+            return ResponseEntity.ok(new RegisterResponse("User registered successfully"));
+        } catch (RuntimeException e) {
+            return ResponseEntity.badRequest().body(new RegisterResponse(e.getMessage()));
+        }
 
-        return ResponseEntity.ok(new RegisterResponse("User registered successfully"));
     }
 
     @PostMapping("/login")
