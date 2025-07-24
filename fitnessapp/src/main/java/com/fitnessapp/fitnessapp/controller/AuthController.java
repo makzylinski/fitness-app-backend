@@ -1,6 +1,7 @@
 package com.fitnessapp.fitnessapp.controller;
 
 import com.fitnessapp.fitnessapp.dto.LoginRequest;
+import com.fitnessapp.fitnessapp.dto.LoginResponse;
 import com.fitnessapp.fitnessapp.dto.RegisterRequest;
 import com.fitnessapp.fitnessapp.dto.RegisterResponse;
 import com.fitnessapp.fitnessapp.service.UserService;
@@ -26,11 +27,10 @@ public class AuthController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new RegisterResponse(e.getMessage()));
         }
-
     }
 
     @PostMapping("/login")
-    public String login(@RequestBody LoginRequest loginRequest) {
-        return userService.login(loginRequest);
+    public ResponseEntity<LoginResponse> login(@RequestBody LoginRequest loginRequest) {
+        return ResponseEntity.ok(userService.login(loginRequest));
     }
 }

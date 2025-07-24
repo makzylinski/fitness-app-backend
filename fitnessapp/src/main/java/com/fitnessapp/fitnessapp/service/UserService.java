@@ -1,6 +1,7 @@
 package com.fitnessapp.fitnessapp.service;
 
 import com.fitnessapp.fitnessapp.dto.LoginRequest;
+import com.fitnessapp.fitnessapp.dto.LoginResponse;
 import com.fitnessapp.fitnessapp.dto.RegisterRequest;
 import com.fitnessapp.fitnessapp.model.Role;
 import com.fitnessapp.fitnessapp.model.User;
@@ -35,7 +36,7 @@ public class UserService {
         userRepository.save(new User(request.getEmail(), encodedPassword, Role.USER));
     }
 
-    public String login(LoginRequest loginRequest) {
+    public LoginResponse login(LoginRequest loginRequest) {
        User user = userRepository.findByEmail(loginRequest.getEmail()).orElseThrow(
                 () -> new RuntimeException("User with this email does not exist")
         );
@@ -44,6 +45,9 @@ public class UserService {
             throw new RuntimeException("Invalid password");
         }
 
-        return jwtService.generateToken(user);
+        return new LoginResponse(
+                jwtService.generateToken(user),
+                "Login successful"
+        );
     }
 }
