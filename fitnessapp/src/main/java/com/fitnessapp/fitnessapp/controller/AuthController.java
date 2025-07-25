@@ -1,18 +1,16 @@
 package com.fitnessapp.fitnessapp.controller;
 
-import com.fitnessapp.fitnessapp.dto.LoginRequest;
-import com.fitnessapp.fitnessapp.dto.LoginResponse;
-import com.fitnessapp.fitnessapp.dto.RegisterRequest;
-import com.fitnessapp.fitnessapp.dto.RegisterResponse;
+import com.fitnessapp.fitnessapp.dto.*;
+import com.fitnessapp.fitnessapp.model.User;
+import com.fitnessapp.fitnessapp.repository.UserRepository;
+import com.fitnessapp.fitnessapp.service.JwtService;
 import com.fitnessapp.fitnessapp.service.UserService;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -20,6 +18,12 @@ public class AuthController {
 
     @Autowired
     private UserService userService;
+
+    @Autowired
+    private JwtService jwtService;
+
+    @Autowired
+    private UserRepository userRepository;
 
     @PostMapping("/register")
     public ResponseEntity<RegisterResponse> register(@RequestBody RegisterRequest registerRequest) {
@@ -48,5 +52,24 @@ public class AuthController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new LoginResponse(e.getMessage()));
         }
+    }
+
+    @GetMapping("/me")
+    public ResponseEntity<UserResponse>getCurrentUser(HttpServletRequest request) {
+        String token = jwtService.extractTokenFromCookie(request);
+        if (token == null) {
+            return ResponseEntity.status(401).body(new UserResponse("Unauthorized"));
+        }
+
+        String email = jwtService.extractEmailFromToken(token);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> new RuntimeException("User not found"));
+        UserResponse userResponse = new UserResponse(
+                user.getEmail(),
+                user.getRole().name(),
+                "User details retrieved successfully"
+        );
+        return ResponseEntity.ok(userResponse);
     }
 }
