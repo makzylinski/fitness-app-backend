@@ -44,7 +44,7 @@ public class AuthController {
             cookie.setHttpOnly(true);
             cookie.setSecure(true);
             cookie.setPath("/");
-            cookie.setMaxAge(24 * 60 * 60);
+            cookie.setMaxAge(-1);
 
             response.addCookie(cookie);
 
@@ -52,6 +52,19 @@ public class AuthController {
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(new LoginResponse(e.getMessage()));
         }
+    }
+
+    @PostMapping("/logout")
+    public ResponseEntity<LogoutResponse> logout(HttpServletResponse response) {
+        Cookie cookie = new Cookie("jwt", null);
+        cookie.setHttpOnly(true);
+        cookie.setSecure(true);
+        cookie.setPath("/");
+        cookie.setMaxAge(0); // Expire the cookie
+
+        response.addCookie(cookie);
+
+        return ResponseEntity.ok(new LogoutResponse("Logout successful"));
     }
 
     @GetMapping("/me")
