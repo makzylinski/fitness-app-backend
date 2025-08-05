@@ -13,6 +13,6 @@ public class WorkoutsController {
     @PostMapping("/workouts")
     public ResponseEntity<String> addWorkout(@RequestBody WorkoutRequest workoutRequest) {
 
-        return ResponseEntity.ok("Workout added successfully: " + workoutRequest.getName());
+        return ResponseEntity.ok("Workout added successfully: " + workoutRequest.getWorkoutName());
     }
 }

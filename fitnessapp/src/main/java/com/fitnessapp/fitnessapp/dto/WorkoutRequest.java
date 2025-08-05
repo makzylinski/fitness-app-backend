@@ -3,15 +3,15 @@ package com.fitnessapp.fitnessapp.dto;
 import java.util.Date;
 
 public class WorkoutRequest {
-    private String name;
+    private String workoutName;
     private String note;
     private Date date;
 
-    public String getName() {
-        return name;
+    public String getWorkoutName() {
+        return workoutName;
     }
-    public void setName(String name) {
-        this.name = name;
+    public void setWorkoutName(String name) {
+        this.workoutName = name;
     }
     public String getNote() {
         return note;
