@@ -1,11 +1,11 @@
 package com.fitnessapp.fitnessapp.dto;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class WorkoutRequest {
     private String workoutName;
     private String note;
-    private Date date;
+    private LocalDate date;
 
     public String getWorkoutName() {
         return workoutName;
@@ -19,10 +19,10 @@ public class WorkoutRequest {
     public void setNote(String note) {
         this.note = note;
     }
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 }

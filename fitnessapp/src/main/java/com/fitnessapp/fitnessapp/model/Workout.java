@@ -1,24 +1,30 @@
 package com.fitnessapp.fitnessapp.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 @Entity
 public class Workout {
-    @Id @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
+    @Column(nullable = false)
     private Long userId;
+
+    @Column(nullable = false)
     private String workoutName;
-    private Date date;
+
+    @Column(nullable = false)
+    private LocalDate date;
+
     private String note;
 
     public Workout() {
     }
 
-    public Workout(Long userId, String workoutName, Date date, String note) {
+    public Workout(Long userId, String workoutName, LocalDate date, String note) {
         this.userId = userId;
         this.workoutName = workoutName;
         this.date = date;
@@ -43,10 +49,10 @@ public class Workout {
     public void setWorkoutName(String workoutName) {
         this.workoutName = workoutName;
     }
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
     public String getNote() {
