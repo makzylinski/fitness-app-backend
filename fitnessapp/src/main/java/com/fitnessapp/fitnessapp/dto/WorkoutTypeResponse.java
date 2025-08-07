@@ -1,26 +1,17 @@
-package com.fitnessapp.fitnessapp.model;
+package com.fitnessapp.fitnessapp.dto;
 
-import jakarta.persistence.*;
-
-@Entity
-public class WorkoutType {
-    @Id
-    @GeneratedValue(strategy = jakarta.persistence.GenerationType.IDENTITY)
+public class WorkoutTypeResponse {
     private Long id;
-
-    @Column(nullable = false, unique = true)
     private String typeName;
-
     private Boolean isFavourite;
     private String description;
     private String icon;
-    @Enumerated(EnumType.STRING)
-    private TypeOfWorkout typeOfWorkout;
 
-    public WorkoutType() {
+    public WorkoutTypeResponse() {
     }
 
-    public WorkoutType(String typeName, Boolean isFavourite, String description, String icon) {
+    public WorkoutTypeResponse(Long id, String typeName, Boolean isFavourite, String description, String icon) {
+        this.id = id;
         this.typeName = typeName;
         this.isFavourite = isFavourite;
         this.description = description;
@@ -57,4 +48,5 @@ public class WorkoutType {
     public void setIcon(String icon) {
         this.icon = icon;
     }
+
 }

@@ -22,6 +22,8 @@ public class WebSecurityConfig {
                 .cors(cors -> cors.configurationSource(corsConfigurationSource()))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/auth/**").permitAll()
+                        .requestMatchers("/api/workouts/**").permitAll()
+                        .requestMatchers("/api/workout-types").permitAll()
                         .anyRequest().authenticated()
                 );
 
