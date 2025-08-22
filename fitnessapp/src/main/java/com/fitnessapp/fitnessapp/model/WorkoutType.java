@@ -20,11 +20,12 @@ public class WorkoutType {
     public WorkoutType() {
     }
 
-    public WorkoutType(String typeName, Boolean isFavourite, String description, String icon) {
+    public WorkoutType(String typeName, Boolean isFavourite, String description, String icon, TypeOfWorkout typeOfWorkout) {
         this.typeName = typeName;
         this.isFavourite = isFavourite;
         this.description = description;
         this.icon = icon;
+        this.typeOfWorkout = typeOfWorkout;
     }
 
     public Long getId() {
@@ -56,5 +57,11 @@ public class WorkoutType {
     }
     public void setIcon(String icon) {
         this.icon = icon;
+    }
+    public TypeOfWorkout getTypeOfWorkout() {
+        return typeOfWorkout;
+    }
+    public void setTypeOfWorkout(TypeOfWorkout typeOfWorkout) {
+        this.typeOfWorkout = typeOfWorkout;
     }
 }
