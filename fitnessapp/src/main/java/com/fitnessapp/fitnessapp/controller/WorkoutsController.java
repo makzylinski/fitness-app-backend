@@ -34,6 +34,7 @@ public class WorkoutsController {
         }
 
         String email = jwtService.extractEmailFromToken(token);
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new RuntimeException("User not found"));
         Workout workout = new Workout(user.getId(), workoutRequest.getWorkoutName(), workoutRequest.getDate(), workoutRequest.getNote());
