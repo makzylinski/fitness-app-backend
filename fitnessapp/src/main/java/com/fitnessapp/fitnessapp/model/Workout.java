@@ -3,6 +3,8 @@ package com.fitnessapp.fitnessapp.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class Workout {
@@ -20,6 +22,9 @@ public class Workout {
     private LocalDate date;
 
     private String note;
+
+    @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
+    private List<WorkoutExercise> workoutExercises = new ArrayList<>();
 
     public Workout() {
     }
