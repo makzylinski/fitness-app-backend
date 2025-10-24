@@ -50,7 +50,7 @@ public class WorkoutsController {
                 user.getId(),
                 workoutRequest.getExerciseDetails().getName(),
                 workoutRequest.getExerciseDetails().getDate(),
-                workoutRequest.getExerciseDetails().getNote()
+                workoutRequest.getExerciseDetails().getNotes()
         );
 
         workoutRepository.save(workout);
