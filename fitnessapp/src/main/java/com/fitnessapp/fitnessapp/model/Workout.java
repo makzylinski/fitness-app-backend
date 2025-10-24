@@ -3,7 +3,6 @@ package com.fitnessapp.fitnessapp.model;
 import jakarta.persistence.*;
 
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -24,7 +23,7 @@ public class Workout {
     private String note;
 
     @OneToMany(mappedBy = "workout", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<WorkoutExercise> workoutExercises = new ArrayList<>();
+    private List<Exercise> exercises;
 
     public Workout() {
     }
@@ -65,6 +64,16 @@ public class Workout {
     }
     public void setNote(String note) {
         this.note = note;
+    }
+    public List<Exercise> getExercises() {
+        return exercises;
+    }
+
+    public void setExercises(List<Exercise> exercises) {
+        this.exercises = exercises;
+        for (Exercise exercise : exercises) {
+            exercise.setWorkout(this);
+        }
     }
 
 }
