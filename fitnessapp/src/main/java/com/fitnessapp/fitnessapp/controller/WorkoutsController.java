@@ -1,6 +1,7 @@
 package com.fitnessapp.fitnessapp.controller;
 
 import com.fitnessapp.fitnessapp.dto.WorkoutRequest;
+import com.fitnessapp.fitnessapp.model.Exercise;
 import com.fitnessapp.fitnessapp.model.User;
 import com.fitnessapp.fitnessapp.model.Workout;
 import com.fitnessapp.fitnessapp.repository.UserRepository;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/workouts")
@@ -52,6 +55,23 @@ public class WorkoutsController {
                 workoutRequest.getExerciseDetails().getDate(),
                 workoutRequest.getExerciseDetails().getNotes()
         );
+
+        List<Exercise> exercises = workoutRequest.getExercises().stream().map(reqExercise -> {
+            WorkoutRequest.ExerciseRequest.NestedExercise exerciseData = reqExercise.getExercise();
+
+            Exercise exercise = new Exercise();
+            exercise.setTypeName(exerciseData.getTypeName());
+            exercise.setFavourite(exerciseData.isFavourite());
+            exercise.setDescription(exerciseData.getDescription());
+            exercise.setIcon(exerciseData.getIcon());
+            exercise.setTypeOfWorkout(exerciseData.getTypeOfWorkout());
+            exercise.setReps(reqExercise.getReps());
+            exercise.setWeight(reqExercise.getWeight());
+            exercise.setWorkout(workout);
+            return exercise;
+        }).toList();
+
+        workout.setExercises(exercises);
 
         workoutRepository.save(workout);
         logger.info("Workout added successfully: {}", workout.getWorkoutName());
