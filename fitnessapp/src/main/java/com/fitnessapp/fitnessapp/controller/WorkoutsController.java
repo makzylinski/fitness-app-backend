@@ -43,6 +43,7 @@ public class WorkoutsController {
         }
 
         String email = jwtService.extractEmailFromToken(token);
+
         User user = userRepository.findByEmail(email)
                 .orElseThrow(() -> {
                     logger.error("User not found for email: {}", email);
@@ -72,6 +73,65 @@ public class WorkoutsController {
         }).toList();
 
         workout.setExercises(exercises);
+
+
+        //{
+        //    "exerciseDetails": {
+        //        "name": "Upper body",
+        //        "date": "2025-09-17",
+        //        "notes": "test"
+        //    },
+        //    "exercises": [
+        //        {
+        //            "exercise": {
+        //                "id": 4,
+        //                "typeName": "Walking",
+        //                "isFavourite": false,
+        //                "description": "Light aerobic activity ideal for recovery",
+        //                "icon": "walk-icon.svg",
+        //                "typeOfWorkout": "CARDIO"
+        //            },
+        //            "reps": "1",
+        //            "weight": "12"
+        //        },
+        //        {
+        //            "exercise": {
+        //                "id": 2,
+        //                "typeName": "Cycling",
+        //                "isFavourite": false,
+        //                "description": "Cardio training on a stationary or outdoor bike",
+        //                "icon": "bike-icon.svg",
+        //                "typeOfWorkout": "CARDIO"
+        //            },
+        //            "reps": "1",
+        //            "weight": "122"
+        //        },
+        //        {
+        //            "exercise": {
+        //                "id": 2,
+        //                "typeName": "Cycling",
+        //                "isFavourite": false,
+        //                "description": "Cardio training on a stationary or outdoor bike",
+        //                "icon": "bike-icon.svg",
+        //                "typeOfWorkout": "CARDIO"
+        //            },
+        //            "reps": "4",
+        //            "weight": "12"
+        //        },
+        //        {
+        //            "exercise": {
+        //                "id": 8,
+        //                "typeName": "Push-ups",
+        //                "isFavourite": false,
+        //                "description": "Classic bodyweight exercise for chest and triceps",
+        //                "icon": "pushup-icon.svg",
+        //                "typeOfWorkout": "STRENGTH"
+        //            },
+        //            "reps": "4",
+        //            "weight": "4"
+        //        }
+        //    ]
+        //}
 
         workoutRepository.save(workout);
         logger.info("Workout added successfully: {}", workout.getWorkoutName());
