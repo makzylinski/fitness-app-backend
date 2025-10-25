@@ -12,10 +12,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -77,5 +74,25 @@ public class WorkoutsController {
         workoutRepository.save(workout);
         logger.info("Workout added successfully: {}", workout.getWorkoutName());
         return ResponseEntity.ok("Workout added successfully: " + workout.getWorkoutName());
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Workout>> getAllWorkouts(HttpServletRequest request) {
+        String token = jwtService.extractTokenFromCookie(request);
+        if (token == null) {
+            logger.warn("Unauthorized request: no token found");
+            return ResponseEntity.status(401).build();
+        }
+
+        String email = jwtService.extractEmailFromToken(token);
+
+        User user = userRepository.findByEmail(email)
+                .orElseThrow(() -> {
+                    logger.error("User not found for email: {}", email);
+                    return new RuntimeException("User not found");
+                });
+
+        List<Workout> userWorkouts = workoutRepository.findByUserId(user.getId());
+        return ResponseEntity.ok(userWorkouts);
     }
 }
