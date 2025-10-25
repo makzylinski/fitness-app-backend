@@ -1,6 +1,8 @@
 package com.fitnessapp.fitnessapp.controller;
 
+import com.fitnessapp.fitnessapp.dto.WorkoutDTO;
 import com.fitnessapp.fitnessapp.dto.WorkoutRequest;
+import com.fitnessapp.fitnessapp.mapper.WorkoutMapper;
 import com.fitnessapp.fitnessapp.model.Exercise;
 import com.fitnessapp.fitnessapp.model.User;
 import com.fitnessapp.fitnessapp.model.Workout;
@@ -77,22 +79,22 @@ public class WorkoutsController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Workout>> getAllWorkouts(HttpServletRequest request) {
+    public ResponseEntity<List<WorkoutDTO>> getAllWorkouts(HttpServletRequest request) {
         String token = jwtService.extractTokenFromCookie(request);
         if (token == null) {
-            logger.warn("Unauthorized request: no token found");
             return ResponseEntity.status(401).build();
         }
 
         String email = jwtService.extractEmailFromToken(token);
-
         User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> {
-                    logger.error("User not found for email: {}", email);
-                    return new RuntimeException("User not found");
-                });
+                .orElseThrow(() -> new RuntimeException("User not found"));
 
-        List<Workout> userWorkouts = workoutRepository.findByUserId(user.getId());
-        return ResponseEntity.ok(userWorkouts);
+        List<Workout> workouts = workoutRepository.findByUserId(user.getId());
+
+        List<WorkoutDTO> workoutDTOs = workouts.stream()
+                .map(WorkoutMapper::toDto)
+                .toList();
+
+        return ResponseEntity.ok(workoutDTOs);
     }
 }
